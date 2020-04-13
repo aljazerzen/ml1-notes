@@ -57,7 +57,7 @@ Notice that an RBF kernel has a parameter, $\sigma$, that needs to be either set
 When $\phi(\x)=\x$, we get a linear kernel defined as:
 $$ \kappa(\x,\x')=\x^\tr x' $$
 
-This kernel is useful if the original data is already high dimensional, and if the original set of features are informative. Examples of such data sets are frequent in text mining and related with a bag of words representation of text documents, or data sets from molecular biology that involve thousands of genes or millions of single-nucleotide polymorphisms. In these cases, a linear combination of features may represent a sufficiently accurate decision boundary, and it may not be required to use some other latent representation.
+This kernel is useful if the original data is already high dimensional, and if the original set of features is informative. Examples of such data sets are frequent in text mining and related with a bag of words representation of text documents, or data sets from molecular biology that involve thousands of genes or millions of single-nucleotide polymorphisms. In these cases, a linear combination of features may represent a sufficiently accurate decision boundary, and it may not be required to use some other latent representation.
 
 \subsection*{Kernels for Comparing Text Documents}
 
@@ -286,7 +286,7 @@ and finally, considering $\vect{w}^\tr\vect{w}=\norm{\vect{w}}^2 $,
 $$ \gamma = {1\over\norm{\vect{w}}} $$
 To maximize the margin, we need to minimize the length of $\vect{w}$. Formally, and considering that all data points in our linearly separable classification problem have to lie on or outside the margin, we therefore want to opimize
 $$\min_{\vect{w},w_0} {1\over 2}\norm{w}^2\ s.t.\ y_i(\vect{w}^\tr \vect{x}_i+w_0)\geq 1,\ i=1\ldots N$$
-For convenience, we have added $1\over 2$ and are optimizing the squared norm instead of the norm, which, of course, should be mathematically more convenient and leads to the same solution. We can now use the method of Lagrange multipliers to find the minima of our criteria function that succumbs to the set of constrains. The primal Lagrangian is:
+For convenience, we have added $1\over 2$ and are optimizing the squared norm instead of the norm, which, of course, should be mathematically more convenient and leads to the same solution. We can now use the method of Lagrange multipliers to find the minima of our criteria function that fulfills the set of constrains. The primal Lagrangian is:
 $$ L(\vect{w},w_0,\vect{\alpha})={1\over 2}\norm{w}^2 - \sum_{i=1}^N \alpha_i [y_i(\vect{w}^\tr \vect{x}_i+w_0)-1] $$
 where $\alpha_i\geq 0$ are Lagrange multipliers. Optimal value of parameters that define the separating hyper-plane is where the gradient of the Lagrangian is zero:
 \begin{align*}
@@ -425,7 +425,7 @@ This is a quadratic function of $\b$ and we need to minimize it, subject to the 
 
 If it is not immediately clear what we did with the slack variables: First, we deliberately put the  $f(\x_i)$ on the left-hand side of the inequality constraints above. This is to illustrate the fact that for observations that we can fit within $\epsilon$, the constraint will immediately be true, and both $\xi_i$ can be 0. For all other observations, one of the inequality constraints will be violated, but not both. So, one of the slack variables will be 0, and the other will be exactly the amount the fit exceeds $\epsilon$. This is what forces the $f(\x_i)$ as close to $y_i$ as possible, in the absolute sense; the only way to make $\xi_i$ as close to 0 as possible, again, in the absolute sense, is to make the $f(x_i)$ as close to $y_i$ as possible. That is, in the optimal solution, the sum of $\xi$ will be exactly the total sum of all exceedances of $\epsilon$), so by minimizing the one, we minimize the other. But we got rid of the absolute term.
 
-The solution of the above optimization problem \citep{2012-Murphy} has, unsurprisingly, the form
+The solution of the above optimization problem \citep{2012-Murphy} has, not surprisingly, the form
 $$\hat{\b} = \sum_i \alpha_i \x_i,$$
 %
 where $\alpha_i \geq 0$. Notice that this solution is typically sparse, as most $\alpha_i = 0$. The $\x_i$ where $\alpha_i > 0$ are again called \emph{support vectors}. We should emphasize that the sparseness comes from the objective function ($\epsilon$). In practice, and depending on training data, we sometimes do get unlucky as it turns out that most $x_i$ from the training data are support vectors.
