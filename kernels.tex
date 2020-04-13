@@ -29,7 +29,7 @@ Notice that \emph{kernel} has different meanings in different contexts. We will 
 
 \subsection*{Polynomial Kernel}
 
-A standard kernel that is related to a transformation to a latent space that can, for instance, yield a linearly-unserable data instances manageble under linear models (e.g., Fig.~\ref{fig:svm-circle}) is a polynomial kernel:
+A standard kernel that is related to a transformation to a latent space that can, for instance, yield linearly-inseparable data instances manageable under linear models (e.g., Fig.~\ref{fig:svm-circle}) is a polynomial kernel:
 $$ \kappa(\x,\x')=(\x^\tr \x'+1)^n.$$
 For $n=2$, and assuming that $x=[u_1 u_2]^\tr$ and $x'=[v_1 v_2]^\tr$ we get
 \begin{align*}
@@ -46,7 +46,7 @@ The squared exponential kernel, or {\em Gaussian} kernel is defined by:
 $$ \kappa(\x, \x')=\exp\left( -{1\over 2}(\x-\x')^\tr\Sigma^{-1}(\x-\x') \right) $$
 When $\Sigma$ is diagonal, this kernel can be expressed as:
 $$ \kappa(\x,\x')=\exp\left(-{1\over 2}\sum_{j=1}^D {1\over\sigma_j^2}(x_j-x_j')^2 \right) $$
-We can interpret $\sigma_j$ as characteristic lenght scale of the dimension. If we assume that all characteristic length scales are equal, then we can write this kernel as:
+We can interpret $\sigma_j$ as a characteristic length scale of the dimension. If we assume that all characteristic length scales are equal, then we can write this kernel as:
 $$ \kappa(\x,\x')=\exp\left( - {\norm{\x-\x'}^2\over 2\sigma^2}\right) $$
 where $\sigma^2$ is known as a bandwidth. Since this kernel depends only on a function $\norm{\x-\x'}$, that is, only on a distance between a point $\x$ and, say, a reference $\x'$, this kernel is a radial basis function and is often referred to as an {\em RBF kernel}.
 
@@ -57,15 +57,15 @@ Notice that an RBF kernel has a parameter, $\sigma$, that needs to be either set
 When $\phi(\x)=\x$, we get a linear kernel defined as:
 $$ \kappa(\x,\x')=\x^\tr x' $$
 
-This kernel is useful if the original data is already high dimensional, and if the original set of features are informative. Examples of such data sets are frequent in text mining and related with a bag of words representation of text documents, or data set from molecular biology that involve thousands of genes or millions of single-nucleotide polymorphisms. In these cases, a linear combination of features may represent a sufficiently accurate decision boundary, and it may not be required to use some other latent representation.
+This kernel is useful if the original data is already high dimensional, and if the original set of features are informative. Examples of such data sets are frequent in text mining and related with a bag of words representation of text documents, or data sets from molecular biology that involve thousands of genes or millions of single-nucleotide polymorphisms. In these cases, a linear combination of features may represent a sufficiently accurate decision boundary, and it may not be required to use some other latent representation.
 
 \subsection*{Kernels for Comparing Text Documents}
 
-Notice that kernel provides a proxy for the similarity of data instances. Given two objects, we will be able to construct regressors or classifiers by only computing the kernels, that is, estimating the similarity between two objects. If the objects are text documents, we can represent the document with vectors that contain word frequencies. We often refer to this presentation as {\em bag of words}. Because we can consider documents of different lengths, the Euclidian distance would fail (why?). We can instead normalize the bag-of-words representation according to the document length or use the {\em cosine similarity}~\footnote{Euclidian distance between normalized vectors and cosine similarity are in practice almost identical. Find what is their relation mathematically!}:
+Notice that a kernel provides a proxy for the similarity of data instances. Given two objects, we will be able to construct regressors or classifiers by only computing the kernels, that is, estimating the similarity between two objects. If the objects are text documents, we can represent the document with vectors that contain word frequencies. We often refer to this presentation as {\em bag of words}. Because we can consider documents of different lengths, the Euclidean distance would fail (why?). We can instead normalize the bag-of-words representation according to the document length or use the {\em cosine similarity}~\footnote{Euclidean distance between normalized vectors and cosine similarity are in practice almost identical. Find what is their relation mathematically!}:
 $$ \kappa(\x, \x')= {\x^\tr \x'\over\norm{\x}\norm{\x'}}  $$
 Cosine similarity measures the cosine of the angle between the two vectors $\x$ and $\x'$ that represent the corresponding documents. Since both vectors are count vectors, the cosine similarity will be between 0 and 1. 
 
-Bag of words representation may include punctuations and frequently occurring words, so-called stop words, that may obscure the differences between documents and yield document representations too similar to each other. Various techniques for text pre-processing to avoid this effect were proposed in the literature. Among the most frequently used are stop-words removal and transform called {\em term frequency-inverse document frequency}, which replaces word counts with weights so that to expose less frequent words.
+Bag of words representation may include punctuations and frequently occurring words, so-called stop words, that may obscure the differences between documents and yield document representations too similar to each other. Various techniques for text pre-processing to avoid this effect were proposed in the literature. Among the most frequently used are stop-words removal and transform called {\em term frequency-inverse document frequency}, which replaces word counts with weights to expose less frequent words.
 
 \subsection*{String Kernels}
 
@@ -75,14 +75,14 @@ TCGGTTTAACGGATTATGGTAC
 TCGGTCCAACGGATAATGGAAC
 TCGGCGATTTAACGGATCGATTTATGGTAC
 \end{verbatim}
-To compare them, we may, for instance, use edit distance, that is, the measure that reports how many atomic changes like deletions, insertion, or single nucleotide mutation we have to introduce in one sequence to derive another one. Sequence similarity may also be computed through the count of the substrings the two strings have in common, or through the length of the longest common substring, or similar. There is vast research on string similarity measures and means to compute them through sequence alignment in the literature of molecular biology, and interested readers should consult algorithms such as BLAST or CLUSTAL.
+To compare them, we may, for instance, use edit distance, that is, the measure that reports how many atomic changes like deletions, insertions, or single nucleotide mutations we have to introduce in one sequence to derive another one. Sequence similarity may also be computed through the count of the substrings the two strings have in common, or through the length of the longest common substring, or similar. There is vast research on string similarity measures and means to compute them through sequence alignment in the literature of molecular biology, and interested readers should consult algorithms such as BLAST or CLUSTAL.
 
 \section{Kernelized Linear Models}
 % entire 14.3
 
 One simple way to use kernels for classification or regression is to use {\em kernel machines}. A kernel machine is a generalized linear model where the input vector has the form
 $$ \phi(\x)=[\kappa(\x,\vect{\mu_1}), \ldots, \kappa(\x,\vect{\mu_K}) ] $$
-where $\vect{\mu}_k$ is a set of {\em centroids} or {\em prototypes}, that is, a subset of examples from the training set. Considering kernels as proximity functions. Then, the above-defined {\em kernelized feature vector} can be, for a give data instance, regarded as a vector of similarity to the prototype data instances. The general idea is that wherever we use a linear term $\b^T\x$, that is, in linear regression, generalized linear models, ordinal regression or similar, we could instead transform the input vector $x$ via a kernel function with respect to a set of \emph{prototype} observations $\vect{\mu}_1$, ..., $\vect{\mu}_k$. After constructing these new features, we proceed with the inference as we would with the original modeling method, we have a different, transformed input space (the term used now is $\beta^T\phi(x)$.
+where $\vect{\mu}_k$ is a set of {\em centroids} or {\em prototypes}, that is, a subset of examples from the training set. Considering kernels as proximity functions, the above-defined {\em kernelized feature vector} can be, for a given data instance, regarded as a vector of similarity to the prototype data instances. The general idea is that wherever we use a linear term $\b^T\x$, that is, in linear regression, generalized linear models, ordinal regression or similar, we could instead transform the input vector $x$ via a kernel function with respect to a set of \emph{prototype} observations $\vect{\mu}_1$, ..., $\vect{\mu}_k$. After constructing these new features, we proceed with the inference as we would with the original modeling method, we have a different, transformed input space (the term used now is $\beta^T\phi(x)$.
 
 Prototypes, if appropriately selected, may help linear models to model feature spaces with feature interactions. Consider an XOR problem and logistic regression. Using RBF kernel and four different prototypes, logistic regression would be able to infer a perfect model for this otherwise hard classification case. Notice, though, that choice of the prototypes here is essential. In general, though:
 \begin{itemize}
@@ -132,7 +132,7 @@ In practice, it turns out that the basis functions for polynomial kernels use sl
 
 $$\langle\phi(x), \phi(x')\rangle = 1 + 3xx' + 3x^2(x')^2 + x^3(x')^3 = (1 + xx')^3.$$
 
-This can be generalized to arbitrary power $r$, obtaining the {\em polynomial kernel} $\kappa(x,x') = (1 + xx')^r$. The beauty of this kernel is that the computation of the inner product in feature space, which has ${r+m}\choose{m}$ dimensions, actually requires just one inner product in the original space (dimension $m$) adding one and taking power.
+This can be generalized to arbitrary power $r$, obtaining the {\em polynomial kernel} $\kappa(x,x') = (1 + xx')^r$. The beauty of this kernel is that the computation of the inner product in feature space, which has ${r+m}\choose{m}$ dimensions, actually requires just one inner product in the original space (dimension $m$), adding one and taking the power.
 
 \subsection*{RBF Kernel Revisited}
 
@@ -160,11 +160,11 @@ In general, it is difficult to verify if a kernel is a Mercer kernel. There are,
     \item $\kappa(x, x') = \x^\tr \matr{A}\x'$, where $\matr{A}$ is symmetric positive semidefinite matrix
 \end{itemize}
 
-Let us start with a linear function $\kappa(\x,\x')=(\x^\tr \x')$, which is a kernel since $\matr{A}=\matr{I}$ is a positive definite matrix, (and as such also positive semi-definite). Then a simple polynomial kernel $\kappa(\x,\x')=(\x^\tr \x')^2=$ contains only terms of degree two, and is equal to the linear kernel squared, and is also a kernel. A slightly generalized function $\kappa(\x,\x')=(\x^\tr \x'+c)^2$ with $c>0$ is also a kernel since its expansion contains linear combinations of linear or polynomial kernels of degree two. Through similar reasoning, we can find taht $\kappa(\x,\x')=(\x^\tr \x'+c)^M$ is a kernel for any $c\geq 0$.
+Let us start with a linear function $\kappa(\x,\x')=(\x^\tr \x')$, which is a kernel since $\matr{A}=\matr{I}$ is a positive definite matrix, (and as such also positive semi-definite). Then a simple polynomial kernel $\kappa(\x,\x')=(\x^\tr \x')^2=$ contains only terms of degree two, and is equal to the linear kernel squared, and is also a kernel. A slightly generalized function $\kappa(\x,\x')=(\x^\tr \x'+c)^2$ with $c>0$ is also a kernel since its expansion contains linear combinations of linear or polynomial kernels of degree two. Through similar reasoning, we can find that $\kappa(\x,\x')=(\x^\tr \x'+c)^M$ is a kernel for any $c\geq 0$.
 
 Another commonly used kernel, a Gaussian kernel, takes the form
 $$ \kappa(\x, \x')=\exp\left(-\norm{\x-\x'}^2/2\sigma^2 \right) $$
-This is a valid kernel, sinceby expanding the square
+This is a valid kernel, since by expanding the square
 $$ \norm{\x-\x'}^2=\x^\tr\x + (\x')^\tr\x' - 2\x^\tr \x' $$
 we can write
 $$ \kappa(\x, \x')=\exp(-\x^\tr\x/2\sigma^2) \exp(\x^\tr\x'/\sigma^2) \exp(-(\x')^\tr\x'/ x\sigma^2) $$
@@ -258,7 +258,7 @@ The degree of fit of kernelized ridge regression depends on the choice of kernel
 
 \subsection*{Support Vector Machines}
 
-Support vector machines are, in essence, linear classifiers that infer separating hyper-planes with maximal margins to the neighboring data points. We here derive the formulation of this classifier, show how to its power with a kernel trick, and describe extension for non-linearly separable cases. We also derive the formulation for support vector machines using hinge loss.
+Support vector machines are, in essence, linear classifiers that infer separating hyper-planes with maximal margins to the neighboring data points. We here derive the formulation of this classifier, show how to use its power with a kernel trick, and describe extension for non-linearly separable cases. We also derive the formulation for support vector machines using hinge loss.
 
 \subsubsection*{The Large Margin Principle}
 
@@ -269,12 +269,12 @@ Support vector machines are, in essence, linear classifiers that infer separatin
 \label{fig:svm-lin-sep}
 \end{figure}
 
-Consider a binary classification problem, with $y=\pm 1$, where data instances of the two classes are linearly separable. Our aim is to define a separating hyper-plane that splits the feature space so that the margin between the closest positive and the closest negative data instance is the largest~\ref{fig:svm-lin-sep}. Intuitively, a large margin would steer us from overfitting and may yield best accuracy on yet unseen data. Let us denote the margin with $\gamma$. We would therefore like to find $\vect{w}$ that defines the direction of a separating hyper-plane $\vect{w}^\tr\vect{x}+w_0=0$, where $w_0$ is the intercept, with largest margin $\gamma$. With no loss of generality, let us choose $w$ so that the data points on the margin are one unit away from separating hyper-plane. The equations for the margins are thus:
+Consider a binary classification problem, with $y=\pm 1$, where data instances of the two classes are linearly separable. Our aim is to define a separating hyper-plane that splits the feature space so that the margin between the closest positive and the closest negative data instance is the largest, as seen on Fig.~\ref{fig:svm-lin-sep}. Intuitively, a large margin would steer us from overfitting and may yield best accuracy on yet unseen data. Let us denote the margin with $\gamma$. We would therefore like to find $\vect{w}$ that defines the direction of a separating hyper-plane $\vect{w}^\tr\vect{x}+w_0=0$, where $w_0$ is the intercept, with largest margin $\gamma$. With no loss of generality, let us choose $w$ so that the data points on the margin are one unit away from separating hyper-plane. The equations for the margins are thus:
 \begin{align*}
 \vect{w}^\tr\vect{x}+w_0 &= 1 \\
-\vect{w}^\tr\vect{x}+w_0 &= -1 \\
+\vect{w}^\tr\vect{x}_\perp+w_0 &= -1 \\
 \end{align*}
-Consider now a point $\vect{x}$ on one margin and its projection $\vect{x}_\perp$ accross separating hyperplane to the other margin:
+Consider now a point $\vect{x}$ on one margin and its projection $\vect{x}_\perp$ across the separating hyperplane to the other margin:
 $$ \vect{x} = \vect{x}_\perp + 2\gamma {\vect{w}\over\norm{\vect{w}}} $$
 Using the equations of the margin, so that $\vect{w}^\tr\vect{x}+w_0 = 1$ and $\vect{w}^\tr\vect{x}_\perp+w_0 = -1$, we obtain:
 $$ \vect{w}^\tr\left(\vect{x}_\perp + 2\gamma {\vect{w}\over\norm{\vect{w}}}\right) + w_0=1, $$
@@ -286,7 +286,7 @@ and finally, considering $\vect{w}^\tr\vect{w}=\norm{\vect{w}}^2 $,
 $$ \gamma = {1\over\norm{\vect{w}}} $$
 To maximize the margin, we need to minimize the length of $\vect{w}$. Formally, and considering that all data points in our linearly separable classification problem have to lie on or outside the margin, we therefore want to opimize
 $$\min_{\vect{w},w_0} {1\over 2}\norm{w}^2\ s.t.\ y_i(\vect{w}^\tr \vect{x}_i+w_0)\geq 1,\ i=1\ldots N$$
-For convenience, we have added $1\over 2$ and are optimizing the squared norm instead of the norm, which, of course, should be mathematically more convenient and leads to the same solution. We can now use the method of Lagrange multipliers to find the minima of our criteria function that succombs to the set of constrains. The primal Lagrangian is:
+For convenience, we have added $1\over 2$ and are optimizing the squared norm instead of the norm, which, of course, should be mathematically more convenient and leads to the same solution. We can now use the method of Lagrange multipliers to find the minima of our criteria function that succumbs to the set of constrains. The primal Lagrangian is:
 $$ L(\vect{w},w_0,\vect{\alpha})={1\over 2}\norm{w}^2 - \sum_{i=1}^N \alpha_i [y_i(\vect{w}^\tr \vect{x}_i+w_0)-1] $$
 where $\alpha_i\geq 0$ are Lagrange multipliers. Optimal value of parameters that define the separating hyper-plane is where the gradient of the Lagrangian is zero:
 \begin{align*}
@@ -341,11 +341,11 @@ Consider a data set with linearly non-separable classes (Fig.~\ref{fig:svm-circl
 \includegraphics[width=0.49\linewidth]{figures/kernels-circle.pdf}
 \hfill
 \includegraphics[width=0.49\linewidth]{figures/kernels-circle-3d.pdf}}
-\caption{A two-feature binary classification data set (left), where the data points of different classes are not linearly separated. The same data set, where each point $\vect{x}$ was transformed through $\Phi(\vect{x})$, so that $\Phi(\vect{x})=\langle x_1^2, x_2^2, \sqrt{2}\ x_1 x_2\rangle$ (right).}
+\caption{A two-feature binary classification data set (left), where the data points of different classes are not linearly separable. The same data set, where each point $\vect{x}$ was transformed through $\Phi(\vect{x})$, so that $\Phi(\vect{x})=\langle x_1^2, x_2^2, \sqrt{2}\ x_1 x_2\rangle$ (right).}
 \label{fig:svm-circle}
 \end{figure}
 
-So, if, instead of using a dot product between two vectors $\x^\tr\x'$ in formulation of SVM, we can replace it with a $\kappa(\x,\x')=(\x^\tr \x')^2$. This substitution is called a kernel trick. The kernel trick avoids the explicit mapping that is needed to, say, get a linear model to learn a nonlinear function or decision boundary. For all $\x$ and $\x'$ in the input space, certain functions $\kappa(\x, \x')$ can be expressed as an inner product in another space. The function $\kappa$ is referred to as a kernel or a kernel function. Notice that the kernel trick allows us never to transform the data to the latent space, that is, never to use the transformation function $\Phi(\vect{x})$. In this way, the latent space could, in principle, have infinite dimensions, yet all we need is to compute the scalar product in this space. For any kernel, there is a corresponding function that transforms the data from original space to latent space, and there are some kernels where the required dimensionality of latent space is infinite. We will discuss various kernel functions and their properties a bit later in this chapter.
+So, if, instead of using a dot product between two vectors $\x^\tr\x'$ in formulation of SVM, we can replace it with a $\kappa(\x,\x')=(\x^\tr \x')^2$. This substitution is called a kernel trick. The kernel trick avoids the explicit mapping that is needed to, say, get a linear model to learn a nonlinear function or decision boundary. For all $\x$ and $\x'$ in the input space, certain functions $\kappa(\x, \x')$ can be expressed as an inner product in another space. The function $\kappa$ is referred to as a kernel or a kernel function. Notice that the kernel trick allows us to never transform the data to the latent space, that is, never to use the transformation function $\Phi(\vect{x})$. In this way, the latent space could, in principle, have infinite dimensions, yet all we need is to compute the scalar product in this space. For any kernel, there is a corresponding function that transforms the data from original space to latent space, and there are some kernels where the required dimensionality of latent space is infinite. We will discuss various kernel functions and their properties a bit later in this chapter.
 
 \begin{figure}
 \centering{
@@ -361,13 +361,13 @@ So, if, instead of using a dot product between two vectors $\x^\tr\x'$ in formul
 
 \subsubsection*{Non-Linearly Separable Data}
 
-If the data is not linearly separated, which is expected from any real data that contains some noise, the support vector machine that we have defined so far does not have any solution. For such cases, we need to introduce slack variables $\xi_i\geq 0$ such that slack is zero if the data instance is on or inside the correct margin boundary, or the slack is positive and equal to the distance to the corresponding margin. Notice that if $0<\xi_i\geq 1$ the point lies inside the margin, but on the corre side of decision boundary. To solve for this problem, we replace the hard constrains with {\em soft margin constraints} with the new objective, where, as before, we would like to maximize the margin with minimal use of slack:
+If the data is not linearly separable, which is expected from any real data that contains some noise, the support vector machine that we have defined so far does not have any solutions. For such cases, we need to introduce slack variables $\xi_i\geq 0$ such that slack is zero if the data instance is on or inside the correct margin boundary, or the slack is positive and equal to the distance to the corresponding margin. Notice that if $0<\xi_i\geq 1$ the point lies inside the margin, but on the correct side of decision boundary. To solve for this problem, we replace the hard constrains with {\em soft margin constraints} with the new objective, where, as before, we would like to maximize the margin with minimal use of slack:
 $$ \min_{\vect{w},w_0,\vect{\xi}} {1\over 2}\norm{w}^2+C\sum_{i=1}^N\xi_i\ \ s.t.\ \xi_i\geq 0,\ y_i(\vect{w}^\tr \vect{x}_i+w_0)\geq 1-\xi_i,\ i=1\ldots N$$
 The corresponding Lagrangian is
 $$ L(\vect{w},w_0,\vect{\alpha})={1\over 2}\norm{w}^2 + C\sum_{i=1}^N\xi_i - \sum_{i=1}^N \alpha_i [y_i(\vect{w}^\tr \vect{x}_i+w_0)-1+\xi_i] -\sum_{i=1}^N\mu_i\xi_i$$
 After computing the corresponding gradients and replacing the results in the primal Lagrangian, the dual form of Lagrangian is the same as before,
 $$ \sum_{i=1}^N \alpha_i - {1\over 2}\sum_{i=1}^N\sum_{j=1}^N \alpha_i\alpha_j y_i y_j \vect{x}_i\vect{x}_j $$
-with the only exception of a box constrain $0\leq\alpha_i\leq C$. Notice that the parameter $C$ is a regularization parameter that controls the number of errors we are willing to tolerate on the training set. This parameter is commonly defined as $C=1/(\nu N)$, where $0<\nu\leq 1$ is the fraction of misclassified points we allow during the training phase. This version of the algorithm is called $\nu$-SVM classifier.
+with the only exception of a box constraint $0\leq\alpha_i\leq C$. Notice that the parameter $C$ is a regularization parameter that controls the number of errors we are willing to tolerate on the training set. This parameter is commonly defined as $C=1/(\nu N)$, where $0<\nu\leq 1$ is the fraction of misclassified points we allow during the training phase. This version of the algorithm is called $\nu$-SVM classifier.
 
 \subsubsection*{Multi-Class Classification}
 
@@ -379,7 +379,7 @@ Regularization parameters like $C$ and $\nu$ are parameters of the algorithm, th
 
 \subsubsection*{Hinge Loss}
 
-An alternative derivation of support vector machine comes from the utility of {\em hige loss}, a variant of a loss function for binary classification, defined as:
+An alternative derivation of support vector machine comes from the utility of {\em hinge loss}, a variant of a loss function for binary classification, defined as:
 $$ L_{\rm hinge}(y, \eta) = \max(0, 1-y\eta) = (1-y\eta)_{+} $$
 Here, $\eta=f(\x)=\vect{w}^\tr x + w_0$ can be regarded as ``confidence'' in choosing label $y=1$. The overall objective is again to maximize the margin while minimizing the loss, therefore:
 $$ \min_{\vect{w},w_0}{1\over 2}\norm{\vect{w}}^2 + C\sum_{i=1}^N(-y_i f(\vect{x}_i))_{+} $$
@@ -425,7 +425,7 @@ This is a quadratic function of $\b$ and we need to minimize it, subject to the 
 
 If it is not immediately clear what we did with the slack variables: First, we deliberately put the  $f(\x_i)$ on the left-hand side of the inequality constraints above. This is to illustrate the fact that for observations that we can fit within $\epsilon$, the constraint will immediately be true, and both $\xi_i$ can be 0. For all other observations, one of the inequality constraints will be violated, but not both. So, one of the slack variables will be 0, and the other will be exactly the amount the fit exceeds $\epsilon$. This is what forces the $f(\x_i)$ as close to $y_i$ as possible, in the absolute sense; the only way to make $\xi_i$ as close to 0 as possible, again, in the absolute sense, is to make the $f(x_i)$ as close to $y_i$ as possible. That is, in the optimal solution, the sum of $\xi$ will be exactly the total sum of all exceedances of $\epsilon$), so by minimizing the one, we minimize the other. But we got rid of the absolute term.
 
-The solution of the above optimization problem \citep{2012-Murphy} has, not surprisingly, the form
+The solution of the above optimization problem \citep{2012-Murphy} has, unsurprisingly, the form
 $$\hat{\b} = \sum_i \alpha_i \x_i,$$
 %
 where $\alpha_i \geq 0$. Notice that this solution is typically sparse, as most $\alpha_i = 0$. The $\x_i$ where $\alpha_i > 0$ are again called \emph{support vectors}. We should emphasize that the sparseness comes from the objective function ($\epsilon$). In practice, and depending on training data, we sometimes do get unlucky as it turns out that most $x_i$ from the training data are support vectors.
