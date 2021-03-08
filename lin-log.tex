@@ -86,7 +86,7 @@ Let us rewrite the criteria function $J(\betas)$ for linear regression in a matr
 J(\betas) & = \sum_{i=1}^N\left(y_i-\hat{y}(\x_i)\right)^2 \\
 & = (\y-\X\betas)^\tr (\y-X\betas)
 \end{align}
-We are looking for the parameters $\betas$ which minimize the value of the criteria function, that is, tha value of the parameters where the gradient is $\vect{0}$. Let us first compute the gradient:
+We are looking for the parameters $\betas$ which minimize the value of the criteria function, that is, the value of the parameters where the gradient is $\vect{0}$. Let us first compute the gradient:
 \begin{equation}
 {\partial J(\betas) \over\partial\betas} = -2 \X^\tr(\y-\X\betas).
 \end{equation}
@@ -177,9 +177,9 @@ Following is an equation for a logistic regression model. In the core, this is a
   \label{eq:logreg}
 \end{eqnarray}
 
-Notice that the linear combination of $\betas$ and values of input variables, when equated to $0$, defines the hyperplane in the feature space. Notice also the all the points that lie on the plane have a value of this function of $0$. The value $0$ is transformed by logistic function to $0.5$. For any other data point that does not lie on the hyperpane the logistic function transforms this value to the value in the interval of $(0.5, 1.0]$ for the points on one side of the hyperplane, or the the value between $(0, 0.5]$ for the points on the other, negative side of the hyperplane. Conveniently, the farther away the point is from the hyperplane, the more to the extremes (0 or 1) will be its value of logistic regression. The hyperplane defined within logistic regression model can thus serve as a decision boundary between two classes.
+Notice that the linear combination of $\betas$ and values of input variables, when equated to $0$, defines the hyperplane in the feature space. Notice also the all the points that lie on the plane have a value of this function of $0$. The value $0$ is transformed by logistic function to $0.5$. For any other data point that does not lie on the hyperpane the logistic function transforms this value to the value in the interval of $(0.5, 1.0]$ for the points on one side of the hyperplane, or the the value between $(0, 0.5]$ for the points on the other, negative side of the hyperplane. Conveniently, the farther away the point is from the hyperplane, the more to the extremes (0 or 1) will be its value of logistic regression. The hyperplane defined within the logistic regression model can thus serve as a decision boundary between two classes.
 
-In what follows, we will use the logistic function so that our model $f_{\betas}(\x)$ returns values between 0 and 1. We will continue to assume that our class variable is two-valued, but assume that its target value is a class marked with $y=1$ and that for it the model $f_{\betas} (\x)$ returns the probability of this class. Notice that the parapeters $\betas$ fully define logistic regression model. Thus, we can write:
+In what follows, we will use the logistic function so that our model $f_{\betas}(\x)$ returns values between 0 and 1. We will continue to assume that our class variable is two-valued, but assume that its target value is a class marked with $y=1$ and that for it, the model $f_{\betas} (\x)$ returns the probability of this class. Notice that the parameters $\betas$ fully define our logistic regression model. Thus, we can write:
 \begin{eqnarray}
   p(y=1|\x;\betas) & = & f_{\betas}(x) \\
   p(y=0|\x;\betas) & = & 1-f_{\betas}(x)
@@ -190,7 +190,7 @@ The expression for $p(y=1|\x;\betas) $ therefore gives us the probability that t
 \label{eq:log-prob}
 \end{equation}
 
-The expression for $p(y|\x;\betas) $ in the above equation therefore gives the probability for a certain value of the independent variable and a certain vector of attribute values in the model given by $\betas$. Now imagine that the values of the elements of the vector $\betas$ change. Certainly, in this way, the probability for a given class in a selected case will also change; once this probability will be higher, another time lower. Change in the parameters of the model change the probabilities with which we observe the data from the training set.
+The expression for $p(y|\x;\betas) $ in the above equation therefore gives the probability for a certain value of the independent variable and a certain vector of attribute values in the model given by $\betas$. Now imagine that the values of the elements of the vector $\betas$ change. Certainly, in this way, the probability for a given class in a selected case will also change; once this probability will be higher, another time lower. Change in the parameters of the model changes the probabilities with which we observe the data from the training set.
 
 Let us now freeze the parameters of the model and compute the joint probability $L(\betas)$, the likelihood, for all the instances in the training set. We assume that the examples from the training set are independent and therefore the probability, with which we observe the values of the classes of particular data instanes described with the vectors $\x$ can be written as the product of the probabilities of individual data instances:
 \begin{eqnarray}
