@@ -9,7 +9,7 @@ We start the chapter with a probabilistic view of linear regression. We first ex
 
 Maximum likelihood estimation involves treating the problem as an optimization or search problem. We seek parameters that result in the best fit for the joint probability of the data sample. For a start, consider that we are given a regression (training) data set with pairs of values for dependent and vectors for independent variables, $\{(y_1,\x_1), \ldots, (y_N,\x_N)\}$. The target variable is continuous, and its estimate is given by
 \begin{equation}
-\hat y(\x)=f_{\betas}(\x)=\beta_0+\sum_{m=1}M\beta_m\x_m.
+\hat y(\x)=f_{\betas}(\x)=\beta_0+\sum_{m=1}^M\beta_m\x_m.
 \end{equation}
 We assume that the target variable $y$ is given by a deterministic function $y(\x,\vect{\beta})$ with additive Gaussian noise, so that
 \begin{equation}
