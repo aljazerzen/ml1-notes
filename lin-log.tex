@@ -39,8 +39,8 @@ We would like to maximize the probability with which we observe the target value
 \begin{align}
 \ell(\betas) & = \log L(\betas) \\
 & = \log \prod_{i=1}^N {1\over\sigma\sqrt{2\pi}} \exp\left({-{\left(y_i-\hat{y}(\x_i)\right)^2\over 2\sigma^2}}\right) \\
-& = \sum_{i=1}^N {1\over\sigma\sqrt{2\pi}} \exp\left({-{\left(y_i-\hat{y}(\x_i)\right)^2\over 2\sigma^2}}\right) \\
-& = m\log{1\over\sigma\sqrt{2\pi}} - {1\over 2\sigma^2}\sum_{i=1}^N\left(y_i-\hat{y}(\x_i)\right)^2.
+& = \sum_{i=1}^N \log\left({1\over\sigma\sqrt{2\pi}} \exp\left({-{\left(y_i-\hat{y}(\x_i)\right)^2\over 2\sigma^2}}\right)\right) \\
+& = N\log{1\over\sigma\sqrt{2\pi}} - {1\over 2\sigma^2}\sum_{i=1}^N\left(y_i-\hat{y}(\x_i)\right)^2.
 \end{align}
 Considering the result, everything else is constant, and the only term that depends on $\betas$ is the sum of squared approximation errors. To maximize the log-likelihood, we need to minimize the sum of squared errors! That is, to train the model that maximizes the probability of observing the training data, we need to minimize the following criteria function:
 \begin{align}
@@ -70,11 +70,11 @@ Let us now compute the partial derivate of our criteria function for $\betas_i$.
 %
 Iterative correction of $\betas_i$ will be therefore
 \begin{equation}
-  \betas_i\leftarrow\betas_i-{\alpha\over m}(f_{\betas}(\x)-y) \x_i
+  \betas_i\leftarrow\betas_i-{\alpha\over N}(f_{\betas}(\x)-y) \x_i
 \end{equation}
 and considering all the data instances in the training set
 \begin{equation}
-  \betas_i\leftarrow\betas_i-{\alpha\over m}\sum_{j=1}M(f_{\betas}(\x_j)-y_j)x_{ji}
+  \betas_i\leftarrow\betas_i-{\alpha\over N}\sum_{j=1}^N(f_{\betas}(\x_j)-y_j)x_{ji}
 \end{equation}
 
 In the linear regression or least squares approach described above, the criteria function $J(\betas)$ is a quadratic function with a single minimum, so we do not need to fear that the optimization would stop at some local minimum. However, as we have already written above, at large values of $\alpha$ the gradient descent may overshoot and miss the minimum and start moving further and further away from it. It helps, of course, to reduce $\alpha$ to a value at which the optimization is stable and converges to optimal value of parameters $\betas$.
@@ -195,18 +195,18 @@ The expression for $p(y|\x;\betas) $ in the above equation therefore gives the p
 Let us now freeze the parameters of the model and compute the joint probability $L(\betas)$, the likelihood, for all the instances in the training set. We assume that the examples from the training set are independent and therefore the probability, with which we observe the values of the classes of particular data instanes described with the vectors $\x$ can be written as the product of the probabilities of individual data instances:
 \begin{eqnarray}
   L(\betas) & = & p(\y|\X;\betas) \nonumber\\
-  & = & \prod_{i=1}M p(y_i|x_i;\betas) \nonumber\\
-  & = & \prod_{i=1}M f_{\betas}(x_i)^{y_i}(1-f_{\betas}(x_i))^{1-y_i}
+  & = & \prod_{i=1}^N p(y_i|x_i;\betas) \nonumber\\
+  & = & \prod_{i=1}^N f_{\betas}(x_i)^{y_i}(1-f_{\betas}(x_i))^{1-y_i}
 \end{eqnarray}
 
 Again, just like with the linear regression, we would like to infer the model that maximizes the likelihood. That is, the parameters where we maximize the probability with which the model observes the training set. For convenience of deriving the $\betas$ which maximize the likelihood, we compute its logarithm, and then maximize the log-likelihood:
 \begin{eqnarray}
   \ell(\betas) & = & \log L(\betas) \nonumber\\
-  & = & \sum_{i=1}M\big[y_i\log f_{\betas}(x_i)+(1-y_i)\log (1-f_{\betas}(x_i)) \big]
+  & = & \sum_{i=1}^N\big[y_i\log f_{\betas}(x_i)+(1-y_i)\log (1-f_{\betas}(x_i)) \big]
 \end{eqnarray}
 
 \section{Gradient Descent for Logistic Regression}
-We are therefore looking for such $\betas$ that maximizes the log-likelihood $\ell(\betas)$. Since we will use the gradient method, and since $\betas$ is a vector $[\betas_0  \betas_1 \ldots \betas_M] $, we need to calculate the partial derivatives of our criterion function:
+We are therefore looking for such $\betas$ that maximizes the log-likelihood $\ell(\betas)$. Since we will use the gradient method, and since $\betas$ is a vector $[\betas_0\ \betas_1\ \ldots\ \betas_M] $, we need to calculate the partial derivatives of our criterion function:
 \begin{eqnarray}
   \frac{\partial}{\partial\betas_j}\ell(\betas)
   & = & \sum_{i=1}^M \frac{\partial}{\partial\betas_j} \big[y_i\log f_{\betas}(x_i)+(1-y_i)\log (1-f_{\betas}(x_i)) \big] \nonumber \\
@@ -222,7 +222,7 @@ Very easy! Have we seen such a result or such an equation before? Of course! In 
 
 The iterative process using gradient descent to find the parameters of the logistic regression model is identical to that of linear regression. Of course, with the small difference that this time the $ f_{\betas}(x)$ is a logistic regression model. However, we write down the step for refreshing the value of the parameter $ \ theta_j $:
 \begin{equation}
-  \betas_j\leftarrow\betas_j+\alpha\sum_{i=1}^{m}\big(y_i-f_{\betas}(x_i)\big) x_{ji}
+  \betas_j\leftarrow\betas_j+\alpha\sum_{i=1}^{N}\big(y_i-f_{\betas}(x_i)\big) x_{ji}
 \end{equation}
 
 Again, the $\alpha$ learning rate is typically small for normalized data (e.g., $0.001$).
