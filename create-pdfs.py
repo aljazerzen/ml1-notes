@@ -7,7 +7,9 @@ chapters = (
     ("glm", 41),
     ("feature-selection", 43),
     ("kernels", 55),
-    ("END", 74)
+    ("boosting", 75),
+    ("ann", 81),
+    ("END", 91)
 )
 
 
